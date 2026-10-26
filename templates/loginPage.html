@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename ='style.css' )}}"
+    />
+    <title>Login Panel</title>
+  </head>
+  <body>
+    <div class="shadow">
+      <div class="conteiner">
+        <div class="loginPanel">
+          <h1 class="loginPanel-title">Login</h1>
+
+          <form class="loginPanel_input" action="/login" method="post">
+            <input
+              type="text"
+              placeholder="username"
+              name="username"
+              class="loginPanel_input-login"
+            />
+
+            <input
+              type="password"
+              placeholder="password"
+              name="password"
+              class="loginPanel_input-password"
+            />
+
+            <input type="submit" value="Login" class="loginPanel-btn" />
+          </form>
+
+          <div class="loginPanel-register">
+            <p class="registerText">Don't have an account? <b>Register</b></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
+{% if error %}
+<p class="loginPanel-error">{{error}}</p>
+{% endif %}

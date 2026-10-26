@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename = 'style.css')}}"
+    />
+    <title>Succecfull Login</title>
+  </head>
+  <body>
+    <div class="shadow">
+      <div class="conteiner">
+        <div class="welcomePanel">
+          <form action="/logout" method="get">
+            <input type="submit" value="Logout" class="welcomePanel-btn"></input>
+          </form>
+          <p class="welcomePanel-txt">Welcome [Username]👋!</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
