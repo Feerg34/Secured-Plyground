@@ -41,7 +41,7 @@ def create_app():
                     query = f"SELECT * FROM users WHERE username = '{username}'"
 
                     # this execute the request above
-                    cursor.execute(query, (username,))
+                    cursor.execute(query)
 
                     # cursor.fetchone() is collecting record form request in my example username
                     user = cursor.fetchone()
