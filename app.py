@@ -111,4 +111,4 @@ if __name__ == '__main__':
     app = create_app()
 
     # start the development server on port 5555
-    app.run(debug =True, port = 5555)
+    app.run(host = "0.0.0.0", debug =True, port = 5555)
