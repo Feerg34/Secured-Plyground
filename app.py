@@ -1,11 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 
-# import biblioteke responsible for hashing
-import werkzeug.security
 import secrets, os, mysql.connector 
 from dotenv import load_dotenv
 
-# load value of .env file (.env is a file where i store SECRET_KEY value)
 load_dotenv()
 from database import get_connection
 
@@ -16,7 +13,8 @@ def create_app():
 
     # os.getenv("SECRET_KEY") read the secret key form .env and app.config["SECRET_KEY"] saves value in Flask configuration
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
-    
+
+
     #set route to main page in this example loginPage.html
     # handle the login form submitted using the POST method
     @app.route("/",methods=["POST", "GET"])
@@ -25,7 +23,7 @@ def create_app():
             return render_template("loginPage.html")
 
         elif request.method == "POST":
-        # retreive data entered by the user #
+            #retreive data entered by the user
             username = request.form["username"]
             password = request.form["password"]
 
@@ -33,12 +31,11 @@ def create_app():
             connection = get_connection()
             try:
                 if connection is not None:
-
-                    #  cursor is a element form mysql biblioteke that allow to make request to database and receive it
+                    # Cursor is a element form mysql biblioteke that allow to make request to database and receive it
                     cursor = connection.cursor()
 
-                    # it is actually a request that ask for username
-                    query = f"SELECT * FROM users WHERE username = '{username}'"
+                    # it is actually a request that ask for username and password
+                    query = f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'"
 
                     # this execute the request above
                     cursor.execute(query)
@@ -53,32 +50,18 @@ def create_app():
                     if user is None:
                         error = "Incorrect username or password"
                         return render_template("loginPage.html", error = error)
-
-                    # if username is in database the i check if user typed correct password   
+                    
                     else:
-                        # because in database are hashes and in backend we receive text password from user i have to compare if typed password is maching with hased from database
-
-                        # actually text password typed in by users
-                        user_password = password
-                        # hased password stored in database_
-                        user_hash_password = user[2]
-
-                        # this line check if typed password match with hash from database
-                        password_status = werkzeug.security.check_password_hash(user_hash_password, user_password)
-                        if password_status == True:
-                            #adding a status of user so then backend can redirect users on next page after successful loggin in
-                            session["logged_in"] = True
-                            return redirect(url_for("success_page"))                        
-                        else:
-                            error = "Incorrect username or password"
-                            return render_template("loginPage.html", error = error)  
-                        
-                # if in some way we cant get connection with database error will ocure                     
+                        # Sesion = True is required to login, user can reach that only by entering correct data
+                        session["logged_in"] = True
+                        return redirect(url_for("success_page"))                        
+  
                 else:
 
                     error = "Login is temporarily unavailable. Please try again later..."
                     return render_template("loginPage.html", error = error) 
                 
+            # this code means that even if some returns will be runed connection anyway will be closed
             finally:
                 if connection is not None:
                     connection.close()
@@ -94,7 +77,7 @@ def create_app():
             return redirect(url_for("login"))   
 
 
-    # handle the logout request  
+    # handle the logout button request  
     @app.route("/logout")
     def logout():
 
