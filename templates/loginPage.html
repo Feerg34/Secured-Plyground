@@ -32,6 +32,9 @@
 
             <input type="submit" value="Login" class="loginPanel-btn" />
           </form>
+          {% if error %}
+          <p class="loginPanel-error">{{error}}</p>
+          {% endif %}
 
           <div class="loginPanel-register">
             <p class="registerText">Don't have an account? <b>Register</b></p>
@@ -41,7 +44,3 @@
     </div>
   </body>
 </html>
-
-{% if error %}
-<p class="loginPanel-error">{{error}}</p>
-{% endif %}
